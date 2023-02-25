@@ -11,6 +11,8 @@ class PostsList(ListView):
     context_object_name = 'news'
 
 
+
+
 class PostsDetail(DetailView):
     model = Post
     template_name = 'post.html'

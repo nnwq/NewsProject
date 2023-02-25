@@ -1,9 +1,35 @@
 {% extends 'flatpages/default.html' %}
 {% load static %}
+{% load custom_filters %}
+{% load custom_tags %}
 {% block title %}
 news
 {% endblock title %}
 {% block content %}
 <h1>All News</h1>
-{{ news }}
+<hr>
+    {% if news %}
+    <table>
+           <tr>
+               <td>Title</td>
+               <td>Created</td>
+               <td>Category</td>
+               <td>Content</td>
+               <td>Author</td>
+               <td>Comments</td>
+           </tr>
+        {% for post in news %}
+            <tr>
+                <td>{{ post.title }}</td>
+                <td>{{ post.time_created</td>
+                <td>{{ post.category.category_name }}</td>
+                <td>{{ post.description|truncatewords:2 }}</td>
+                <td>{{ post.content|truncatewords:20 }}</td>
+                <td>{{ post.author }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+    <h2>No News!</h2>
+    {% endif %}
 {% endblock content %}
