@@ -8,6 +8,16 @@ class PostForm(forms.ModelForm):
         model = Post
         fields = ('title', 'author', 'type_choice', 'category', 'content')
 
+    def clean(self):
+        cleaned_data = super().clean()
+        title = cleaned_data.get('title')
+        if title is not None and len(title) < 5:
+            raise ValidationError({
+                "description": "Title cannot contain less than 5 symbols."
+            })
+
+        return cleaned_data
+
 
 class CategoryForm(forms.ModelForm):
     class Meta:

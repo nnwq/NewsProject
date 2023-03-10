@@ -2,6 +2,9 @@ from django.contrib.auth.models import User
 from django.db import models
 from datetime import datetime
 
+from django.urls import reverse
+
+
 # Create your models here.
 
 
@@ -19,14 +22,14 @@ class Author(models.Model):
         self.save()
 
     def __str__(self):
-        return self.name
+        return f"{self.name}"
 
 
 class Category(models.Model):
     category_name = models.CharField(unique=True, max_length=255)
 
     def __str__(self):
-        return self.category_name
+        return f"{self.category_name}"
 
 
 class Post(models.Model):
@@ -58,6 +61,9 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+
+    def get_absolute_url(self):
+        return reverse('post_detail', args=[str(self.id)])
 
 
 class PostCategory(models.Model):
