@@ -1,5 +1,5 @@
-from django.shortcuts import render
-from django.views.generic import ListView, DetailView, CreateView
+from django.urls import reverse_lazy
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
 from news.filters import NewsFilter
 from news.forms import PostForm
@@ -44,3 +44,16 @@ class PostsCreate(CreateView):
         response = super().form_valid(form)
 
         return response
+
+
+class PostsUpdate(UpdateView):
+    model = Post
+    fields = ['content', 'title']
+    template_name = 'post_create.html'
+    success_url = "/"
+
+
+class PostsDelete(DeleteView):
+    model = Post
+    template_name = 'post_delete.html'
+    success_url = reverse_lazy('post_list')
