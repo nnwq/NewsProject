@@ -16,10 +16,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-from news.views import PostsCreate
+from news.views import PostsCreate, PostsList
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('pages/', include('django.contrib.flatpages.urls')),
     path('news/', include('news.urls')),
+    path('', PostsList.as_view(), name='post_list'),
+    path('/', include('protect.urls')),
+    path('sign/', include('signin.urls')),
+    path('accounts/', include('allauth.urls')),
 ]

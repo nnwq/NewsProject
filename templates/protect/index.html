@@ -1,0 +1,8 @@
+{% extends "main.html" %}
+
+{% block content %}
+<h2>Page of an authorised user: {{request.user.username}}</h2>
+<div> Personal info </div>
+
+<button> <a href="sign/logout/">Log Out</a> </button>
+{% endblock %}
