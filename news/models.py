@@ -15,7 +15,7 @@ class Author(models.Model):
     def update_rating(self):
         for post in Post.objects.filter(author=self):
             self.rating += Post.rating*3
-            for comment in Comment.objects.filer(post=post):
+            for comment in Comment.objects.filter(post=post):
                 self.rating += comment.rating
         for comment in Comment.objects.filter(user=self.name):
             self.rating += comment.rating
@@ -44,15 +44,15 @@ class Post(models.Model):
     type_choice = models.CharField(choices=POST_CHOICES, default='News', max_length=10)
     time_created = models.DateTimeField(auto_now_add=True)
     category = models.ManyToManyField(Category, through='PostCategory')
-    content = models.TextField(default='No Content')
+    content = models.TextField(null=True, blank=True)
     rating = models.IntegerField(default=0)
 
     def like(self):
-        self.rating + 1
+        self.rating += 1
         self.save()
 
     def dislike(self):
-        self.rating - 1
+        self.rating -= 1
         self.save()
 
     def preview(self):
@@ -73,16 +73,16 @@ class PostCategory(models.Model):
 
 class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    name = models.ForeignKey(Category, on_delete=models.CASCADE)
+    name = models.ForeignKey(Author, on_delete=models.CASCADE)
     text = models.CharField(default='An Upvote comment', max_length=255)
     time_created = models.DateTimeField(auto_now_add=True)
     rating = models.IntegerField(default=0)
 
     def like(self):
-        self.rating + 1
+        self.rating += 1
         self.save()
 
     def dislike(self):
-        self.rating - 1
+        self.rating -= 1
         self.save()
 

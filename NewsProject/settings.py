@@ -59,6 +59,8 @@ SITE_ID = 1
 
 LOGIN_URL = '/sign/login/'
 
+ACCOUNT_FORMS = {'signup': 'sign.models.BasicSignupForm'}
+
 LOGIN_REDIRECT_URL = '/'
 
 MIDDLEWARE = [

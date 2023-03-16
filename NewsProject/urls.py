@@ -23,7 +23,7 @@ urlpatterns = [
     path('pages/', include('django.contrib.flatpages.urls')),
     path('news/', include('news.urls')),
     path('', PostsList.as_view(), name='post_list'),
-    path('/', include('protect.urls')),
+    path('profile/', include('protect.urls')),
     path('sign/', include('signin.urls')),
     path('accounts/', include('allauth.urls')),
 ]

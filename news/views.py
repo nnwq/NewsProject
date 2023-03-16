@@ -1,6 +1,6 @@
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
+from django.contrib.auth.mixins import LoginRequiredMixin
 from news.filters import NewsFilter
 from news.forms import PostForm
 from news.models import Post
@@ -24,13 +24,13 @@ class PostsList(ListView):
         return context
 
 
-class PostsDetail(DetailView):
+class PostsDetail(LoginRequiredMixin, DetailView):
     model = Post
     template_name = 'post.html'
     context_object_name = 'post'
 
 
-class PostsCreate(CreateView):
+class PostsCreate(LoginRequiredMixin, CreateView):
     form_class = PostForm
     model = Post
     template_name = 'post_create.html'
@@ -46,14 +46,15 @@ class PostsCreate(CreateView):
         return response
 
 
-class PostsUpdate(UpdateView):
+class PostsUpdate(LoginRequiredMixin, UpdateView):
     model = Post
     fields = ['content', 'title']
     template_name = 'post_create.html'
-    success_url = "/"
+    success_url = reverse_lazy('post_list')
 
 
-class PostsDelete(DeleteView):
+class PostsDelete(LoginRequiredMixin, DeleteView):
     model = Post
     template_name = 'post_delete.html'
     success_url = reverse_lazy('post_list')
+

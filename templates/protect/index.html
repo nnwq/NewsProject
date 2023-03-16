@@ -4,5 +4,17 @@
 <h2>Page of an authorised user: {{request.user.username}}</h2>
 <div> Personal info </div>
 
-<button> <a href="sign/logout/">Log Out</a> </button>
+<form action="{% url 'logout' %}" method="post">
+    {% csrf_token %}
+    <button type="submit">Logout</button>
+  </form>
+
+{% if is_not_author %}
+    <form action="{% url 'upgrade' %}" method="post">
+      {% csrf_token %}
+      <button type="submit">Become an Author</button>
+    </form>
+  {% else %}
+    <p>You are already an author.</p>
+  {% endif %}
 {% endblock %}
