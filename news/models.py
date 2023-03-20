@@ -5,9 +5,6 @@ from datetime import datetime
 from django.urls import reverse
 
 
-# Create your models here.
-
-
 class Author(models.Model):
     name = models.OneToOneField(User, on_delete=models.CASCADE)
     rating = models.IntegerField(default=0)

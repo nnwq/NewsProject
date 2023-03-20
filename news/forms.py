@@ -4,9 +4,15 @@ from news.models import Post, Category
 
 
 class PostForm(forms.ModelForm):
+    categories = forms.ModelMultipleChoiceField(
+        queryset=Category.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+        required=False
+    )
+
     class Meta:
         model = Post
-        fields = ('title', 'author', 'type_choice', 'category', 'content')
+        fields = ('title', 'author', 'type_choice', 'content')
 
     def clean(self):
         cleaned_data = super().clean()
@@ -17,6 +23,13 @@ class PostForm(forms.ModelForm):
             })
 
         return cleaned_data
+
+    def save(self, commit=True):
+        post = super().save(commit=False)
+        if commit:
+            post.save()
+            self.save_m2m()
+        return post
 
 
 class CategoryForm(forms.ModelForm):

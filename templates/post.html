@@ -5,8 +5,13 @@ post
 {% endblock title %}
 
 {% block content %}
-<h1>{{ post.title }}
-    {{ post.content }}
-    {{ post.author }}
-</h1>
+<h1> {{ post.title }}</h1>
+<h2/>{{ post.author }}
+     {{ post.content }}
+     {{ post.time_created }}
+    {% for category in post.category.all %}
+    {{ category }}
+    {% if not forloop.last %},
+    {% endif %}
+    {% endfor %}</h2>
 {% endblock content %}

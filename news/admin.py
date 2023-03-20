@@ -10,6 +10,7 @@ class CategoryAdmin(admin.ModelAdmin):
 
 class PostAdmin(admin.ModelAdmin):
     form = PostForm
+    filter_horizontal = ('category',)
 
 
 admin.site.register(Category, CategoryAdmin)

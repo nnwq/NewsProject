@@ -3,7 +3,7 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from django.contrib.auth.mixins import LoginRequiredMixin
 from news.filters import NewsFilter
 from news.forms import PostForm
-from news.models import Post
+from news.models import Post, PostCategory, Category
 
 
 class PostsList(ListView):
@@ -42,6 +42,12 @@ class PostsCreate(LoginRequiredMixin, CreateView):
             form.instance.type_choice = Post.NEWS
 
         response = super().form_valid(form)
+
+        categories = self.request.POST.getlist('category')
+
+        for category_id in categories:
+            category = Category.objects.get(id=category_id)
+            self.object.category.add(category)
 
         return response
 
