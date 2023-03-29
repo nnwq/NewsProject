@@ -1,9 +1,33 @@
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib import messages
+from django.shortcuts import render, redirect
 from news.filters import NewsFilter
 from news.forms import PostForm
-from news.models import Post, PostCategory, Category
+from news.models import Post, PostCategory, Category, Subscription
+
+
+@login_required
+def subscribe(request):
+    if request.method == 'POST':
+        category_id = request.POST.get('category_id')
+        category = Category.objects.get(id=category_id)
+        subscription = Subscription(user=request.user.author, category=category)
+        subscription.save()
+        messages.success(request, f"You have subscribed to {category.category_name} category.")
+        return redirect('subscribe')
+
+    categories = Category.objects.all()
+    subscriptions = Subscription.objects.filter(user=request.user.author)
+
+    context = {
+        'categories': categories,
+        'subscriptions': subscriptions
+    }
+
+    return render(request, 'subscribe.html', context)
 
 
 class PostsList(ListView):
@@ -48,6 +72,15 @@ class PostsCreate(LoginRequiredMixin, CreateView):
         for category_id in categories:
             category = Category.objects.get(id=category_id)
             self.object.category.add(category)
+
+        # Send email notification to subscribers of the category
+        for author in category.subscribers.all():
+            send_mail(
+                    subject='New post in subscribed category',
+                    message=f'A new post "{self.object.title}" has been created in the category "{category.category_name}".',
+                    from_email=settings.DEFAULT_FROM_EMAIL,
+                    recipient_list=[author.name.email],
+                )
 
         return response
 

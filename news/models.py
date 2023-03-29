@@ -8,6 +8,7 @@ from django.urls import reverse
 class Author(models.Model):
     name = models.OneToOneField(User, on_delete=models.CASCADE)
     rating = models.IntegerField(default=0)
+    subscribed_to_categories = models.ManyToManyField('Category', related_name='subscribers', blank=True)
 
     def update_rating(self):
         for post in Post.objects.filter(author=self):
@@ -83,3 +84,8 @@ class Comment(models.Model):
         self.rating -= 1
         self.save()
 
+
+class Subscription(models.Model):
+    user = models.ForeignKey(Author, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    email = models.EmailField(max_length=254)

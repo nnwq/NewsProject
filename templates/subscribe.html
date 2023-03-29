@@ -1,0 +1,28 @@
+{% extends 'account/base.html' %}
+
+{% block content %}
+    <h2>Subscribe to Categories</h2>
+
+    {% if subscriptions %}
+        <h4>Subscribed Categories:</h4>
+        <ul>
+            {% for subscription in subscriptions %}
+                <li>{{ subscription.category.category_name }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+        <h4>Available Categories:</h4>
+        <ul>
+            {% for category in categories %}
+                <li>
+                    {{ category.category_name }}
+                    <input type="checkbox" name="category_id" value="{{ category.id }}" {% if subscription and subscription.category == category %}checked{% endif %}>
+                </li>
+            {% endfor %}
+        </ul>
+        <button type="submit">Subscribe</button>
+    </form>
+{% endblock %}

@@ -13,4 +13,5 @@ PyYAML~=6.0
 packaging~=21.3
 pyparsing~=3.0.9
 django-allauth~=0.52.0
+celery~=5.2.7
 

@@ -9,6 +9,8 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
+from dotenv import load_dotenv
+load_dotenv()
 import os
 from pathlib import Path
 
@@ -162,9 +164,17 @@ SOCIALACCOUNT_PROVIDERS = {
         # (``socialaccount`` app) containing the required client
         # credentials, or list them here:
         'APP': {
-            'client_id': '',
-            'secret': '',
-            'key': ''
+            'client_id': os.getenv("GOOGLE_CLIENT_ID"),
+            'secret': os.getenv("GOOGLE_SECRET_KEY"),
+            'key': os.getenv("GOOGLE_KEY")
         }
     }
 }
+
+EMAIL_HOST = 'smtp.google.com'
+EMAIL_PORT = os.getenv("EMAIL_PORT")
+EMAIL_HOST_USER = 'dmitrypomisin@gmail.com'
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
+EMAIL_USE_SSL = True
+
+DEFAULT_FROM_EMAIL = 'dmitrypomishin@gmail.com'

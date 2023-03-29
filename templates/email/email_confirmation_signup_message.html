@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {% load account %}
+    {% user_display user as user_display %}
+    {% get_current_site as site %}
+    {% url 'account_confirm_email' key=confirmation_key as activate_url %}
+    <h1>Thank you for registering {{ user.username }}!</h1>
+    <h3>Please follow <a href="{{ activate_url }}">the link</a> to activate your account</h3>
+</body>
+</html>
